@@ -178,10 +178,10 @@ describe('Base methods', () => {
 });
 
 describe ('API foundation', () => {
-    it('fetchRetry(GET)', () => {
-        const config = require('../config.json');
-        const api = new SwgohHelpApi(config.user, config.password);
+    const config = require('../config.json');
+    const api = new SwgohHelpApi(config.user, config.password);
 
+    it('fetchRetry(GET)', () => {
         const reply = api.fetchRetry('GET', 'https://postman-echo.com/get?foo1=bar1&foo2=bar2');
 
         const jsonReply = JSON.parse(reply.responseText);
@@ -191,9 +191,6 @@ describe ('API foundation', () => {
     });
 
     it('fetchRetry(POST)', () => {
-        const config = require('../config.json');
-        const api = new SwgohHelpApi(config.user, config.password);
-
         const reply = api.fetchRetry('POST', 'https://postman-echo.com/post?hand=wave');
 
         const jsonReply = JSON.parse(reply.responseText);
@@ -202,10 +199,7 @@ describe ('API foundation', () => {
     });
 
     it('fetchRetry(POST payload)', () => {
-        const config = require('../config.json');
-        const api = new SwgohHelpApi(config.user, config.password);
-
-        const reply = api.fetchRetry('POST', 'https://postman-echo.com/post', { id: 10, name: 'John' }, 3);
+       const reply = api.fetchRetry('POST', 'https://postman-echo.com/post', { id: 10, name: 'John' }, 3);
 
         const jsonReply = JSON.parse(reply.responseText);
 
@@ -267,10 +261,22 @@ describe('API data', () => {
     const config = require('../config.json');
     const api = new SwgohHelpApi(config.user, config.password);
 
-    it('getPlayer', () => {
-        const players = api.getPlayer('232669733');
+    it('getPlayers', () => {
+        const players = api.getPlayers([ '232669733', '973246862']);
         
-        const player = players[0];
+        var player = players[0];
+
+        assert.strictEqual(Array.isArray(player.roster), true);
+        assert.strictEqual(player.allyCode, 973246862);
+
+        player = players[1];
+
+        assert.strictEqual(Array.isArray(player.roster), true);
+        assert.strictEqual(player.allyCode, 232669733);
+    });
+
+    it('getPlayer', () => {
+        const player = api.getPlayer('232669733');
 
         assert.strictEqual(Array.isArray(player.roster), true);
         assert.strictEqual(player.allyCode, 232669733);

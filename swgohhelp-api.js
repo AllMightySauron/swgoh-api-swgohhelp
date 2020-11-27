@@ -857,7 +857,7 @@ class SwgohHelpApi {
      * @returns {Map<string, UnitData}} Map between unit base id and unit data.
      */
     fetchUnits() {
-        this.logger.debug("getUnits@swgohhelp-api: fetching units from swgoh.help");
+        this.logger.debug("fetchUnits@swgohhelp-api: fetching units from swgoh.help");
 
         const payload = {
             "collection": CollectionsEnum.CollectionUnitsList,
@@ -880,7 +880,7 @@ class SwgohHelpApi {
             // loop over units to create map
             tempUnits.forEach(unit => units.set(unit.baseId, unit));
 
-            this.logger.debug(`getUnits@swgohhelp-api: API loaded units ok (total = ${units.size})`);
+            this.logger.debug(`fetchUnits@swgohhelp-api: API loaded units ok (total = ${units.size})`);
         }
 
         return units;
@@ -1002,11 +1002,11 @@ class SwgohHelpApi {
     }
 
     /**
-     * Fetch player data from swgoh.help.
+     * Fetch players' data from swgoh.help.
      * @param {string[]} allyCodes Array of desired ally codes.
      * @returns {Player[]} List of player data.
      */
-    getPlayer(allyCodes) {
+    getPlayers(allyCodes) {
         // maximum batch size for ally code retrieval
         const MAX_ALLYCODES = 20;
 
@@ -1041,6 +1041,22 @@ class SwgohHelpApi {
                 throw new Error(`Cannot get player data: ${xhr.responseText}`);
             }
         }
+    }
+
+    /**
+     * Fetch player data from swgoh.help.
+     * @param {string} allyCode 
+     * @returns {Player} Player data.
+     */
+    getPlayer(allyCode) {
+        var result;
+
+        const players = this.getPlayers(allyCode);
+
+        // return first player
+        if (players) result = players[0];
+
+        return result;
     }
 
     /**
