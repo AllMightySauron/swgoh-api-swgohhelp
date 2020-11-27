@@ -492,35 +492,35 @@ class SwgohHelpApi {
     * @returns {object} Game data for use in the stats calculator.
     */
     static getGameData() {
-    const GAME_DATA_URL = 'https://swgoh-stat-calc.glitch.me/gameData.json';
-    const GAME_DATA_CACHE = './cache/gameData.json';        
+        const GAME_DATA_URL = 'https://swgoh-stat-calc.glitch.me/gameData.json';
+        const GAME_DATA_CACHE = module.path ? module.path + '/cache/gameData.json' : './cache/gameData.json';        
 
-    const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
-    var xhr = new XMLHttpRequest();
+        const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+        var xhr = new XMLHttpRequest();
 
-    // open syncronous
-    xhr.open('GET', GAME_DATA_URL, false);
+        // open syncronous
+        xhr.open('GET', GAME_DATA_URL, false);
 
-    // setting request headers
-    xhr.setRequestHeader('Content-Type', 'application/json');
-        
-    // try to get game data from glitch
-    xhr.send();
+        // setting request headers
+        xhr.setRequestHeader('Content-Type', 'application/json');
+            
+        // try to get game data from glitch
+        xhr.send();
 
-    var gameData;
+        var gameData;
 
-    if (xhr.readyState == xhr.DONE && xhr.status == 200) {
-        // cache game data
-        fs.writeFileSync(GAME_DATA_CACHE, xhr.responseText, 'UTF-8');
+        if (xhr.readyState == xhr.DONE && xhr.status == 200) {
+            // cache game data
+            fs.writeFileSync(GAME_DATA_CACHE, xhr.responseText, 'UTF-8');
 
-        // use glitch.com game data
-        gameData = JSON.parse(xhr.responseText);
-    } else {
-        /// use local cache
-        gameData = require(GAME_DATA_CACHE);
-    }
+            // use glitch.com game data
+            gameData = JSON.parse(xhr.responseText);
+        } else {
+            /// use local cache
+            gameData = require(GAME_DATA_CACHE);
+        }
 
-    return gameData;
+        return gameData;
     }
 
     /**
