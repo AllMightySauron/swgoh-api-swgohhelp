@@ -459,7 +459,7 @@ class SwgohHelpApi {
 
         // load character acronyms from file
         const ACRONYMS_FILE = module.path ? module.path + '/resources/toon_acronyms.json' : 'resources/toon_acronyms.json';
-        this.acronyms = SwgohHelpApi.loadAcronyms('./resources/toon_acronyms.json');
+        this.acronyms = SwgohHelpApi.loadAcronyms(ACRONYMS_FILE);
 
         // add stats calculator module for swgoh.help 
         this.statsCalculator = require('swgoh-stat-calc');
