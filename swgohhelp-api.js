@@ -1024,7 +1024,7 @@ class SwgohHelpApi {
             allyCodes1.splice(MAX_ALLYCODES, allyCodes.length);
             allyCodes2.splice(0, MAX_ALLYCODES);
 
-            return this.getPlayer(allyCodes1).concat(this.getPlayer(allyCodes2));
+            return this.getPlayers(allyCodes1).concat(this.getPlayers(allyCodes2));
         } else {
             const payload = {
                 "allycodes": allyCodes
