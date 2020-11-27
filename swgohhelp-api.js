@@ -784,7 +784,7 @@ class SwgohHelpApi {
                 result.chars.gear[unit.gear - 1]++;
 
                 // increase zeta count
-                result.chars.charZetas += SwgohHelpApi.getZetaCount(unit);
+                result.chars.zetas += SwgohHelpApi.getZetaCount(unit);
             } else if (unit.combatType == CombatTypeEnum.CombatTypeShip) {
                 // increase ship count
                 result.ships.count++;

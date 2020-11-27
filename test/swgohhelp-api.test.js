@@ -77,6 +77,9 @@ describe('Static methods', () => {
         // GLs
         assert.strictEqual(stats.chars.galacticLegendCount, 1);
 
+        // zetas
+        assert.strictEqual(stats.chars.zetas, 105);
+
         // levels
         assert.strictEqual(stats.chars.levels.reduce((a, b) => a + b), stats.chars.count);
         assert.strictEqual(stats.ships.levels.reduce((a, b) => a + b), stats.ships.count);
