@@ -1,0 +1,38 @@
+{
+  "name": "swgoh-api-swgohhelp",
+  "version": "0.0.1",
+  "description": "SWGoH helper API for swgoh.help",
+  "main": "index.js",
+  "keywords": [
+    "api",
+    "helper",
+    "swgoh",
+    "swgoh.help"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/AllMightySauron/swgoh-api-swgohhelp"
+  },
+  "contributors": [
+    {
+      "name": "João Simões",
+      "github": "https://github.com/AllMightySauron"
+    }
+  ],
+  "author": "João Simões <joao.santos.simoes@gmail.com> (https://github.com/AllMightySauron)",
+  "license": "GPL v3.0",
+  "scripts": {
+    "qa": "nyc mocha --timeout 0",
+    "test": "mocha --timeout 0"
+  },
+  "dependencies": {
+    "log4js": "^6.3.0",
+    "swgoh-stat-calc": "^1.1.1",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "devDependencies": {
+    "jshint": "^2.12.0",
+    "mocha": "^8.2.1",
+    "nyc": "^15.1.0"
+  }
+}
