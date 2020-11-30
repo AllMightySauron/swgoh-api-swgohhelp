@@ -309,4 +309,24 @@ describe('API data', () => {
         assert.strictEqual(Array.isArray(data), true);
     });
 
+    it('getGuildPlayers', () => {
+        const allyCode = '232669733';
+
+        const guild = api.getGuild(allyCode);
+        const guildPlayers = api.getGuildPlayers(allyCode);
+
+        assert.strictEqual(guildPlayers.length, guild.roster.length);
+        guildPlayers.forEach(guildPlayer => {
+            assert.strictEqual(typeof guild.roster.find(player => player.allyCode == guildPlayer.allyCode) != "undefined", true);
+        });
+    });
+
+    it('getGuildUnitStatsSummary', () => {
+        const guildPlayers = api.getGuildPlayers('232669733');
+        const stats = api.getGuildUnitStatsSummary(guildPlayers, 'VADER');
+
+        assert.strictEqual(stats.count, stats.levels.reduce((a, b) => a + b));
+        assert.strictEqual(stats.count, stats.rarities.reduce((a, b) => a + b));
+        assert.strictEqual(stats.count, stats.gear.reduce((a, b) => a + b));
+    });
 });

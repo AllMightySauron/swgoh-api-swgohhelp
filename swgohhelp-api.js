@@ -125,6 +125,16 @@ const MAX_UNIT_STARS = 7;
 const MAX_CHAR_GEAR_LEVEL = 13;
 
 /**
+ * Maximum character zetas.
+ */
+const MAX_CHAR_ZETAS = 6;
+
+/**
+ * Maximum character relics (for gear 13).
+ */
+const MAX_CHAR_RELICS = 7;
+
+/**
  * Valid collections for data gathering in APIs.
  */
 const CollectionsEnum = { 
@@ -1012,10 +1022,10 @@ class SwgohHelpApi {
 
         var response;
 
-        this.logger.debug(`getPlayer@swgohhelp-api: data request for ally codes [${allyCodes}]`);
+        this.logger.debug(`getPlayers@swgohhelp-api: data request for ally codes [${allyCodes}]`);
 
         if (allyCodes.length > MAX_ALLYCODES) {
-            this.logger.debug(`getPlayer@swgohhelp-api: splitting ally codes`);
+            this.logger.debug(`getPlayers@swgohhelp-api: splitting ally codes`);
 
             // split in half
             var allyCodes1 = Array.from(allyCodes);
@@ -1049,6 +1059,8 @@ class SwgohHelpApi {
      * @returns {Player} Player data.
      */
     getPlayer(allyCode) {
+        this.logger.debug(`getPlayer@swgohhelp-api: data request for ally code ${allyCode}`);
+
         var result;
 
         const players = this.getPlayers(allyCode);
@@ -1137,7 +1149,7 @@ class SwgohHelpApi {
 
     /**
      * Fetch guild data from swgoh.help.
-     * @param {string} allyCode The player ally code.
+     * @param {string} allyCode The guild player ally code.
      * @returns {Guild} Guild data.
      */
     getGuild(allyCode) {
@@ -1153,6 +1165,115 @@ class SwgohHelpApi {
         } else {
             throw new Error(`Cannot get guild data: ${xhr.responseText}`);
         }	
+    }
+
+    /**
+     * Fetch guild players from swgoh.help.
+     * @param {string} allyCode The guild player ally code.
+     * @returns {Player[]} Guild data.
+     */
+    getGuildPlayers(allyCode) {
+        this.logger.debug(`getGuildPlayers@swgohhelp-api: data request for ally code "${allyCode}"`);
+
+        var result;
+
+        // get guild data
+        const guild = this.getGuild(allyCode);
+
+        // sanity check
+        if (guild) {
+            // build array with guild player ally codes
+            const allyCodes = guild.roster.map(player => player.allyCode);
+
+            // get data for guild players
+            result = this.getPlayers(allyCodes);
+        }
+
+        return result;
+    }
+
+    /**
+     * Get unit summary from guild.
+     * @param {Player[]} guildPlayers List of guild players.
+     * @param {string} unitName Unit name to search.
+     */
+    getGuildUnitStatsSummary(guildPlayers, unitName) {
+        var stats = { 
+            count: 0,
+            galacticLegendCount: 0,
+            levels: new Array(MAX_UNIT_LEVELS).fill(0),
+            rarities: new Array(MAX_UNIT_STARS).fill(0),
+            gear:  new Array(MAX_CHAR_GEAR_LEVEL).fill(0),
+            relics: new Array(MAX_CHAR_RELICS).fill(0),
+            zetas: {
+                count: new Array(MAX_CHAR_ZETAS + 1).fill(0),   // zero zetas is a possibility
+                list: {}
+            },
+            speed: {
+                min: 9999,
+                max: 0
+            }
+        };
+        
+        // get standard unit data
+        const unit = this.findUnit(unitName);
+        
+        // sanity check
+        if (unit) {
+            // loop over guild players
+            guildPlayers.forEach(player => {
+                // get player unit
+                const playerUnit = player.roster.find(searchUnit => searchUnit.defId == unit.baseId);
+
+                // check if found
+                if (playerUnit) {
+                    // another one
+                    stats.count++;
+
+                    // levels
+                    stats.levels[playerUnit.level - 1]++;
+
+                    // rarities
+                    stats.rarities[playerUnit.rarity - 1]++;
+
+                    // chars only
+                    if (unit.combatType == CombatTypeEnum.CombatTypeChar) {
+                        //  gear level
+                        stats.gear[playerUnit.gear - 1]++;
+
+                        // relics
+                        if (playerUnit.gear == 13) stats.relics[playerUnit.relic.currentTier - 2]++;
+
+                        // zetas
+                        const zetaSkills = SwgohHelpApi.getZetaCount(playerUnit);
+                        stats.zetas.count[zetaSkills]++;
+
+                        const zetas = SwgohHelpApi.getZetas(playerUnit);
+                        zetas.forEach(zeta => {
+                            // check if found
+                            if (stats.zetas.list[zeta.nameKey]) {
+                                stats.zetas.list[zeta.nameKey]++;
+                            } else {
+                                stats.zetas.list[zeta.nameKey] = 1;
+                            }
+                        });
+
+                        // speed calculation (special case for chars without mods)
+                            // calculate unit stats
+                        playerUnit.stats = this.statsCalculator.calcCharStats(playerUnit);
+
+                        const charSpeed = 
+                            playerUnit.stats.base[ModUnitStatEnum.StatSpeed] +
+                                (playerUnit.stats.mods[ModUnitStatEnum.StatSpeed] ? playerUnit.stats.mods[ModUnitStatEnum.StatSpeed] : 0);
+
+                        if (stats.speed.min > charSpeed) stats.speed.min = charSpeed;
+                        if (stats.speed.max < charSpeed) stats.speed.max = charSpeed;
+                    }
+                }
+            });
+        }
+
+        return stats;
     }
 
     /**
