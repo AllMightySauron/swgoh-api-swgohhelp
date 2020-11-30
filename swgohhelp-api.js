@@ -1037,6 +1037,7 @@ class SwgohHelpApi {
             return this.getPlayers(allyCodes1).concat(this.getPlayers(allyCodes2));
         } else {
             const payload = {
+                "language": this.language,
                 "allycodes": allyCodes
             };
     
@@ -1251,10 +1252,13 @@ class SwgohHelpApi {
                         const zetas = SwgohHelpApi.getZetas(playerUnit);
                         zetas.forEach(zeta => {
                             // check if found
-                            if (stats.zetas.list[zeta.nameKey]) {
-                                stats.zetas.list[zeta.nameKey]++;
+                            if (stats.zetas.list[zeta.id]) {
+                                stats.zetas.list[zeta.id].count++;
                             } else {
-                                stats.zetas.list[zeta.nameKey] = 1;
+                                stats.zetas.list[zeta.id] = {
+                                    count: 1,
+                                    name: zeta.nameKey
+                                };
                             }
                         });
 
