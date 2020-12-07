@@ -132,7 +132,7 @@ const MAX_CHAR_ZETAS = 6;
 /**
  * Maximum character relics (for gear 13).
  */
-const MAX_CHAR_RELICS = 7;
+const MAX_CHAR_RELICS = 8;
 
 /**
  * Valid collections for data gathering in APIs.

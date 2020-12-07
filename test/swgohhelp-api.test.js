@@ -323,7 +323,13 @@ describe('API data', () => {
 
     it('getGuildUnitStatsSummary', () => {
         const guildPlayers = api.getGuildPlayers('232669733');
-        const stats = api.getGuildUnitStatsSummary(guildPlayers, 'VADER');
+        var stats = api.getGuildUnitStatsSummary(guildPlayers, 'VADER');
+
+        assert.strictEqual(stats.count, stats.levels.reduce((a, b) => a + b));
+        assert.strictEqual(stats.count, stats.rarities.reduce((a, b) => a + b));
+        assert.strictEqual(stats.count, stats.gear.reduce((a, b) => a + b));
+
+        stats = api.getGuildUnitStatsSummary(guildPlayers, 'SLKR');
 
         assert.strictEqual(stats.count, stats.levels.reduce((a, b) => a + b));
         assert.strictEqual(stats.count, stats.rarities.reduce((a, b) => a + b));
