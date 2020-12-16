@@ -760,6 +760,7 @@ class SwgohHelpApi {
                 levels: new Array(MAX_UNIT_LEVELS).fill(0),
                 rarities: new Array(MAX_UNIT_STARS).fill(0),
                 gear:  new Array(MAX_CHAR_GEAR_LEVEL).fill(0),
+                relics: new Array(MAX_CHAR_RELICS).fill(0),
                 zetas: 0,
             },
             ships: {
@@ -792,6 +793,9 @@ class SwgohHelpApi {
 
                 // increase gear count
                 result.chars.gear[unit.gear - 1]++;
+
+                // check for relics
+                if (unit.gear == 13) result.chars.relics[unit.relic.currentTier - 2]++;
 
                 // increase zeta count
                 result.chars.zetas += SwgohHelpApi.getZetaCount(unit);

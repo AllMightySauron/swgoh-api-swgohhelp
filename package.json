@@ -1,6 +1,6 @@
 {
   "name": "swgoh-api-swgohhelp",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "SWGoH helper API for swgoh.help",
   "main": "index.js",
   "keywords": [

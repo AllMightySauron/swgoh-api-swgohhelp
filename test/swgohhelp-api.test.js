@@ -90,6 +90,9 @@ describe('Static methods', () => {
 
         // gear
         assert.strictEqual(stats.chars.gear.reduce((a, b) => a + b), stats.chars.count);
+
+        // relics
+        assert.strictEqual(stats.chars.relics.reduce((a, b) => a + b), 27);
     });
 
     it ('isGL', () => {
