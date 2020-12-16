@@ -571,7 +571,7 @@ class SwgohHelpApi {
      * @returns {boolean} Whether this unit is a GL.
      */
     static isGL(unitData) {
-        return unitData.skills.filter(skill => skill.nameKey.includes('GALACTICLEGEND')).length > 0;
+        return unitData.skills.filter(skill => skill.id.includes('GALACTICLEGEND')).length > 0;
     }
 
     /**
