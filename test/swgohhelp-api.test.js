@@ -10,7 +10,8 @@ describe('Static methods', () => {
         const acronyms = SwgohHelpApi.loadAcronyms('./resources/toon_acronyms.json');
 
         assert.strictEqual(typeof acronyms, "object");
-        assert.strictEqual(acronyms.size > 0, true);
+        assert.strictEqual(acronyms.chars.size > 0, true);
+        assert.strictEqual(acronyms.ships.size > 0, true);
     });
 
     it ('getGameData', () => {
@@ -252,11 +253,20 @@ describe('Local cache', () => {
     it('findUnit', () => {
         // not found
         assert.strictEqual(api.findUnit('DUMMY'), undefined);
-        // acronym
+
+        // acronym - char
+        assert.strictEqual(api.findUnit('SlKR').baseId, 'SUPREMELEADERKYLOREN');
+        // acronym - ship
         assert.strictEqual(api.findUnit('H1').baseId, 'CAPITALMONCALAMARICRUISER');
-        // full name
+
+        // full name - char
+        assert.strictEqual(api.findUnit('Darth Vader').baseId, 'VADER');
+        // full name - ship
         assert.strictEqual(api.findUnit('Chimaera').baseId, 'CAPITALCHIMAERA');
-        // partial name
+
+        // partial name - char
+        assert.strictEqual(api.findUnit('Marauder').baseId, 'SITHMARAUDER');
+        // partial name - ship
         assert.strictEqual(api.findUnit('Tooth').baseId, 'HOUNDSTOOTH');
     });
 
