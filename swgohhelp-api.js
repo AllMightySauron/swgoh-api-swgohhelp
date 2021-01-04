@@ -442,16 +442,21 @@ class SwgohHelpApi {
      * Default constructor.
      * @param {string} user swgoh.help login user.
      * @param {string} password swgoh.help login password.
+     * @param {object} logger log4js logger (optional).
      * @param {string} language swgoh.help supported localization (defaults to 'eng_us').
      */
-    constructor(user, password, language = 'eng_us') {
+    constructor(user, password, logger, language = 'eng_us') {
         // setup logging
-        const log4js = require("log4js");
+        if (logger) {
+            this.logger = logger;
+        } else {
+            const log4js = require("log4js");
 
-        const loggerConfig = require('./log4jsconf.json');
-        log4js.configure(loggerConfig);
+            const loggerConfig = require('./log4jsconf.json');
+            log4js.configure(loggerConfig);
 
-        this.logger = log4js.getLogger();
+            this.logger = log4js.getLogger();
+        }
 
         // authentication
     	this.user = user;
@@ -462,7 +467,7 @@ class SwgohHelpApi {
         this.token = null;
 
         // language
-        this.language = language;
+        this.setLanguage(language);
         
         // base URL for api calls
         this.urlBase = 'https://api.swgoh.help';
@@ -816,6 +821,22 @@ class SwgohHelpApi {
         }
 
         return result;
+    }
+
+    /**
+     * Sets the API language.
+     * @param {string} language The desired API language string (e.g.: 'eng_us').
+     */
+    setLanguage(language) {
+        this.language = language;
+    }
+
+    /**
+     * Gets the API language.
+     * @returns {string} The current API language string.
+     */
+    getLanguage(language) {
+        return this.language;
     }
 
     /**

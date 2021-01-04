@@ -182,6 +182,14 @@ describe('Base methods', () => {
         const config = require('../config.json');
         const api = new SwgohHelpApi(config.user, config.password);
     });
+
+    it('getLanguage', () =>  {
+        const config = require('../config.json');
+        const api = new SwgohHelpApi(config.user, config.password);
+
+        // default language
+        assert.strictEqual(api.getLanguage(), 'eng_us');
+    });
 });
 
 describe ('API foundation', () => {
