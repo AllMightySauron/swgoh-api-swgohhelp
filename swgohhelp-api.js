@@ -570,7 +570,7 @@ class SwgohHelpApi {
      * @returns {Unit} The unit from player roster.
      */
     static getPlayerUnitFromUnits(player, searchName) {
-        return player.roster.find(unit => unit.nameKey.toLowerCase() == searchName.toLowerCase());
+        return player.roster.filter(unit => unit.nameKey != null).find(unit => unit.nameKey.toLowerCase() == searchName.toLowerCase());
     }
 
     /**

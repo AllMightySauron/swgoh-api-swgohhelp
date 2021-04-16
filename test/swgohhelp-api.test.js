@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 
-const { SwgohHelpApi, SquadUnitTypeEnum, ModSetEnum, ModUnitStatEnum, ModSlotEnum, CollectionsEnum } = require('../swgohhelp-api');
+const { SwgohHelpApi, SquadUnitTypeEnum, ModSetEnum, ModUnitStatEnum, ModSlotEnum, CollectionsEnum, CombatTypeEnum } = require('../swgohhelp-api');
 
 const assert = require('assert');
 
@@ -22,14 +22,14 @@ describe('Static methods', () => {
 
     it ('getZetaCount', () => {
         const player = require('./player.973246862.json');
-        const unit = SwgohHelpApi.getPlayerUnitFromUnits(player, 'UNIT_VADER_NAME');
+        const unit = SwgohHelpApi.getPlayerUnitFromUnits(player, 'Darth Vader');
 
         assert.strictEqual(SwgohHelpApi.getZetaCount(unit), 3);
     });
 
     it ('getZetas', () => {
         const player = require('./player.973246862.json');
-        const unit = SwgohHelpApi.getPlayerUnitFromUnits(player, 'UNIT_VADER_NAME');
+        const unit = SwgohHelpApi.getPlayerUnitFromUnits(player, 'Darth Vader');
 
         const zetaSkills = [
             {
@@ -62,7 +62,7 @@ describe('Static methods', () => {
         const player = require('./player.973246862.json');
 
         assert.strictEqual(SwgohHelpApi.getPlayerUnitFromUnits(player, 'DUMMY'), undefined);
-        assert.strictEqual(SwgohHelpApi.getPlayerUnitFromUnits(player, 'UNIT_VADER_NAME').defId, 'VADER');
+        assert.strictEqual(SwgohHelpApi.getPlayerUnitFromUnits(player, 'Darth Vader').defId, 'VADER');
     });
 
     it ('getPlayerStatsSummary', () => {
@@ -71,15 +71,17 @@ describe('Static methods', () => {
         const stats = SwgohHelpApi.getPlayerStatsSummary(player);
 
         // counts
-        assert.strictEqual(stats.chars.count + stats.ships.count, player.roster.length);
-        assert.strictEqual(stats.chars.count, 190);
-        assert.strictEqual(stats.ships.count, 50);
+        assert.strictEqual(stats.chars.count + stats.ships.count, 
+                            player.roster.filter(unit => unit.combatType == CombatTypeEnum.CombatTypeChar).length +
+                            player.roster.filter(unit => unit.combatType == CombatTypeEnum.CombatTypeShip).length);
+        assert.strictEqual(stats.chars.count, 197);
+        assert.strictEqual(stats.ships.count, 51);
 
         // GLs
-        assert.strictEqual(stats.chars.galacticLegendCount, 1);
+        assert.strictEqual(stats.chars.galacticLegendCount, 2);
 
         // zetas
-        assert.strictEqual(stats.chars.zetas, 105);
+        assert.strictEqual(stats.chars.zetas, 123);
 
         // levels
         assert.strictEqual(stats.chars.levels.reduce((a, b) => a + b), stats.chars.count);
@@ -93,14 +95,14 @@ describe('Static methods', () => {
         assert.strictEqual(stats.chars.gear.reduce((a, b) => a + b), stats.chars.count);
 
         // relics
-        assert.strictEqual(stats.chars.relics.reduce((a, b) => a + b), 27);
+        assert.strictEqual(stats.chars.relics.reduce((a, b) => a + b), 43);
     });
 
     it ('isGL', () => {
         const player = require('./player.973246862.json');
 
-        assert.strictEqual(SwgohHelpApi.isGL(SwgohHelpApi.getPlayerUnitFromUnits(player, 'UNIT_VADER_NAME')), false);
-        assert.strictEqual(SwgohHelpApi.isGL(SwgohHelpApi.getPlayerUnitFromUnits(player, 'UNIT_SUPREMELEADERKYLOREN_NAME')), true);
+        assert.strictEqual(SwgohHelpApi.isGL(SwgohHelpApi.getPlayerUnitFromUnits(player, 'Darth Vader')), false);
+        assert.strictEqual(SwgohHelpApi.isGL(SwgohHelpApi.getPlayerUnitFromUnits(player, 'Supreme Leader Kylo Ren')), true);
     });
 
     it ('getGuildStats', () => {
