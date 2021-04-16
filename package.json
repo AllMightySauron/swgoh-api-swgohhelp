@@ -1,6 +1,6 @@
 {
   "name": "swgoh-api-swgohhelp",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "SWGoH helper API for swgoh.help",
   "main": "index.js",
   "keywords": [
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "log4js": "^6.3.0",
-    "swgoh-stat-calc": "^1.1.1",
+    "swgoh-stat-calc": "^1.1.2",
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
