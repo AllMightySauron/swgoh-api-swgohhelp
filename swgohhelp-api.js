@@ -982,19 +982,19 @@ class SwgohHelpApi {
             // set new search name to acronym mapping
             searchName = this.acronyms.chars.get(searchName).toLowerCase();
 
-            this.logger.debug(`getUnit@swgohhelp-api: mapped "${unitName}" to character "${searchName}"`);
+            this.logger.debug(`findUnit@swgohhelp-api: mapped "${unitName}" to character "${searchName}"`);
         } else if (this.acronyms.ships.has(searchName)) {
             // set new search name to acronym mapping
             searchName = this.acronyms.ships.get(searchName).toLowerCase();
 
-            this.logger.debug(`getUnit@swgohhelp-api: mapped "${unitName}" to ship "${searchName}"`);
+            this.logger.debug(`findUnit@swgohhelp-api: mapped "${unitName}" to ship "${searchName}"`);
         }
 
         // search for full unit name
         result = Array.from(this.cache.units.values()).find(unit => unit.nameKey.toLowerCase() == searchName);
 
         if (result) {
-            this.logger.debug(`getUnit@swgohhelp-api: full name matched to id "${result.baseId}" (${result.nameKey})`);
+            this.logger.debug(`findUnit@swgohhelp-api: full name matched to id "${result.baseId}" (${result.nameKey})`);
         } else {
             // not found: try substring
             for (let [unitBaseId, unit] of this.cache.units) {
@@ -1002,7 +1002,7 @@ class SwgohHelpApi {
                 if (unit.nameKey.toLowerCase().includes(searchName)) {                    
                     result = unit;
 
-                    this.logger.debug(`getUnit@swgohhelp-api: partial name matched to id "${result.baseId}" (${result.nameKey})`);
+                    this.logger.debug(`findUnit@swgohhelp-api: partial name matched to id "${result.baseId}" (${result.nameKey})`);
                     break;
                 }
             }
