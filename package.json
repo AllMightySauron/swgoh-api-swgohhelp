@@ -1,6 +1,6 @@
 {
   "name": "swgoh-api-swgohhelp",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "SWGoH helper API for swgoh.help",
   "main": "index.js",
   "keywords": [
@@ -31,8 +31,8 @@
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
-    "jshint": "^2.12.0",
-    "mocha": "^8.2.1",
+    "jshint": "^2.13.1",
+    "mocha": "^8.4.0",
     "nyc": "^15.1.0"
   }
 }
