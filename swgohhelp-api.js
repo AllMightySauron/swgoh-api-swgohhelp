@@ -415,6 +415,7 @@ const fs = require('fs');
  * @property {number[]}  levels   Number of characters per level.
  * @property {number[]}  rarities Number of characters per star level.
  * @property {number[]}  gear     Number of characters per gear level.
+ * @property {number}    relic5Above Number of gear 13 chars with relic 5 or above.
  * @property {number}    zetas    Number of zetas applied to characters.
  */
 
@@ -770,6 +771,7 @@ class SwgohHelpApi {
                 rarities: new Array(MAX_UNIT_STARS).fill(0),
                 gear:  new Array(MAX_CHAR_GEAR_LEVEL).fill(0),
                 relics: new Array(MAX_CHAR_RELICS).fill(0),
+                relic5Above: 0,
                 zetas: 0,
             },
             ships: {
@@ -805,6 +807,9 @@ class SwgohHelpApi {
 
                 // check for relics
                 if (unit.gear == 13) result.chars.relics[unit.relic.currentTier - 2]++;
+
+                // check G13 and relic 5 or above
+                if (unit.gear == 13 && unit.relic.currentTier >= 7) result.chars.relic5Above++;
 
                 // increase zeta count
                 result.chars.zetas += SwgohHelpApi.getZetaCount(unit);

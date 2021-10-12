@@ -96,6 +96,9 @@ describe('Static methods', () => {
 
         // relics
         assert.strictEqual(stats.chars.relics.reduce((a, b) => a + b), 43);
+
+        // relics 5 or above
+        assert.strictEqual(stats.chars.relic5Above, 23);
     });
 
     it ('isGL', () => {
