@@ -317,7 +317,7 @@ describe('API data', () => {
 
         assert.strictEqual(Array.isArray(guild.roster), true);
         assert.strictEqual(guild.id, 'G1593911327');
-        assert.strictEqual(guild.name, 'Strikes PT');
+        assert.strictEqual(guild.name, 'Aloha Portugal Strikes');
     });
 
     it('getData', () => {
